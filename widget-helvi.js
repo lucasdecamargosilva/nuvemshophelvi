@@ -1963,7 +1963,9 @@
     }
 
     // ─── EXECUTA APENAS EM PÁGINAS DE PRODUTO ────────────────────────────────────
-    const isProductPage = window.location.pathname.includes('/products/') || window.location.pathname.includes('/product/') || window.location.pathname.includes('/produtos/') || window.location.pathname.includes('/produto/') || window.location.pathname.includes('/p/') || window.location.pathname.includes('preview.html') || document.querySelector('meta[property="og:type"][content="product"]');
+    // Só em página de produto de verdade: /produtos/<slug>/ (a listagem /produtos/ não conta) ou og:type de produto.
+    // A tag do GTM dispara no site todo; quem filtra é aqui.
+    const isProductPage = /^\/(produtos?|products?)\/[^/?#]+/.test(window.location.pathname) || window.location.pathname.includes('preview.html') || document.querySelector('meta[property="og:type"][content="product"], meta[property="og:type"][content="nuvemshop:product"]');
 
     if (isProductPage) {
         if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
